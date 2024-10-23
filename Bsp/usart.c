@@ -65,4 +65,17 @@ int _write(int fd, char *pBuffer, int size)
     return size;
 }
 
-
+void USART2_IRQHandler(void)
+{
+    if(RESET != usart_interrupt_flag_get(USART2, USART_INT_FLAG_IDLE)) {
+        /* clear IDLE flag */
+        usart_data_receive(USART2);
+        /* number of data received */
+        rx_count = 256 - (dma_transfer_number_get(DMA0, DMA_CH2));
+        receive_flag = 1;
+        /* disable DMA and reconfigure */
+        dma_channel_disable(DMA0, DMA_CH2);
+        dma_transfer_number_config(DMA0, DMA_CH2, 256);
+        dma_channel_enable(DMA0, DMA_CH2);
+    }
+}
