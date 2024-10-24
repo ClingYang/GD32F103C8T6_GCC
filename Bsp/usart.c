@@ -64,6 +64,10 @@ int _write(int fd, char *pBuffer, int size)
     }
     return size;
 }
+
+
+
+
 #else
 /* retarget the C library printf function to the USART */
 int fputc(int ch, FILE *f)
@@ -73,6 +77,7 @@ int fputc(int ch, FILE *f)
         ;
     return ch;
 }
+
 #endif
 /// @brief 串口2中断函数
 /// @param
@@ -115,3 +120,9 @@ void printf2(const char *fmt, ...)
     while (usart_flag_get(USART2, USART_FLAG_TC) == RESET)
         ;
 }
+// int fputc(int ch, FILE *f)
+// {
+//     usart_data_transmit(UART3, (uint8_t) ch);
+//     while(RESET == usart_flag_get(UART3, USART_FLAG_TBE));
+//     return ch;
+// }
