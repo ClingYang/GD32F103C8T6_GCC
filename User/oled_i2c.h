@@ -17,16 +17,16 @@ void oled_write_data(uint8_t oled_data);
 
 void oled_init(void);
 
-void oled_display_white(void);							// OLED °×ÆÁÏÔÊ¾
-void oled_clear_all(void);								// OLED ÇåÆÁÏÔÊ¾
-void oled_fill(uint8_t fill_data);                      // µ¥Ò»É«¶ÈÌî³äOLEDÆÁ
+void oled_display_white(void);							// OLED ç™½å±æ˜¾ç¤º
+void oled_clear_all(void);								// OLED æ¸…å±æ˜¾ç¤º
+void oled_fill(uint8_t fill_data);                      // å•ä¸€è‰²åº¦å¡«å……OLEDå±
 
-void oled_set_pos(uint8_t x, uint8_t y);                // ÉèÖÃ×ø±ê
-void oled_show_char(uint8_t x, uint8_t y, uint8_t chr, uint8_t char_size);    // ÏÔÊ¾×Ö·û
-void oled_show_string(uint8_t x, uint8_t y, uint8_t *str, uint8_t char_size); // ÏÔÊ¾×Ö·û´®
+void oled_set_pos(uint8_t x, uint8_t y);                // è®¾ç½®åæ ‡
+void oled_show_char(uint8_t x, uint8_t y, uint8_t chr, uint8_t char_size);    // æ˜¾ç¤ºå­—ç¬¦
+void oled_show_string(uint8_t x, uint8_t y, uint8_t *str, uint8_t char_size); // æ˜¾ç¤ºå­—ç¬¦ä¸²
 
-void oled_show_chinese(uint8_t x, uint8_t y, uint8_t index);                  // ÏÔÊ¾ÖĞÎÄ
+void oled_show_chinese(uint8_t x, uint8_t y, uint8_t index);                  // æ˜¾ç¤ºä¸­æ–‡
 
-void oled_show_error(uint8_t x, uint16_t y, uint8_t *err);                    // ÏÔÊ¾´íÎóÌáÊ¾
+void oled_show_error(uint8_t x, uint16_t y, uint8_t *err);                    // æ˜¾ç¤ºé”™è¯¯æç¤º
 	
 #endif

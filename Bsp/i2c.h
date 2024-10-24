@@ -6,6 +6,6 @@
 #define I2C_SPEED      100000
 #define I2C0_OWN_ADDR  0xA0
 
-void i2c_init(void);      // ³õÊ¼»¯i2c0
+void i2c_init(void);      // åˆå§‹åŒ–i2c0
 
 #endif

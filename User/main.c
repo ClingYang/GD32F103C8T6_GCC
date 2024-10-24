@@ -1,7 +1,5 @@
 #include "gd32f10x.h"
 #include "systick.h"
-#include <stdio.h>
-#include "systick.h"
 #include "i2c.h"
 #include "oled_i2c.h"
 #include "usart.h"

@@ -3,18 +3,18 @@
 void i2c_init(void){
 	i2c_deinit(I2C0);
 	
-	//Ê¹ÄÜÍâÉèÊ±ÖÓ
+	//ä½¿èƒ½å¤–è®¾æ—¶é’Ÿ
 	rcu_periph_clock_enable(RCU_I2C0);
 	rcu_periph_clock_enable(RCU_GPIOB);
 	
-	//ÉèÖÃgpio¿Ú
+	//è®¾ç½®gpioå£
 	gpio_init(GPIOB, GPIO_MODE_AF_OD, GPIO_OSPEED_50MHZ, GPIO_PIN_6 | GPIO_PIN_7);
 	
-	//ÉèÖÃi2c0
-	i2c_clock_config(I2C0, I2C_SPEED, I2C_DTCY_2);  // i2cÊ±ÖÓÅäÖÃ
+	//è®¾ç½®i2c0
+	i2c_clock_config(I2C0, I2C_SPEED, I2C_DTCY_2);  // i2cæ—¶é’Ÿé…ç½®
 	i2c_mode_addr_config(I2C0, I2C_I2CMODE_ENABLE, I2C_ADDFORMAT_7BITS, I2C0_OWN_ADDR);
 	i2c_ack_config(I2C0, I2C_ACK_ENABLE);
 	
-	//Ê¹ÄÜi2c0
+	//ä½¿èƒ½i2c0
 	i2c_enable(I2C0);
 }

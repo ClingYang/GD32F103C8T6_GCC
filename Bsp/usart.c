@@ -75,6 +75,7 @@ int fputc(int ch, FILE *f)
     return ch;
 }
 #endif
+//还是要把串口2的中断打开的
 void USART2_IRQHandler(void)
 {
     if(RESET != usart_interrupt_flag_get(USART2, USART_INT_FLAG_IDLE)) {

@@ -4,20 +4,20 @@
 #include "oled_font.h"
 
 /**
-* ¹¦ÄÜ£º
-* ÊäÈë£º
-*     1£©uint8_t i2c_addr, 
-*     2£©uint8_t i2c_data
+* åŠŸèƒ½ï¼š
+* è¾“å…¥ï¼š
+*     1ï¼‰uint8_t i2c_addr, 
+*     2ï¼‰uint8_t i2c_data
 
 **/
 void i2c_write_byte(uint8_t i2c_addr, uint8_t i2c_data){
 	while(i2c_flag_get(I2C0, I2C_FLAG_I2CBSY));
 	i2c_start_on_bus(I2C0);
-	while(!i2c_flag_get(I2C0, I2C_FLAG_SBSEND));    // ½øÈëÖ÷»úÄ£Ê½
+	while(!i2c_flag_get(I2C0, I2C_FLAG_SBSEND));    // è¿›å…¥ä¸»æœºæ¨¡å¼
 	i2c_master_addressing(I2C0, OLED_I2C_ADDR, I2C_TRANSMITTER);
-	while(!i2c_flag_get(I2C0, I2C_FLAG_ADDSEND));   // ÅĞ¶ÏµØÖ··¢ËÍ³öÈ¥
-	i2c_flag_clear(I2C0, I2C_FLAG_ADDSEND);         // Çå³ıADDSENDÎ»
-	while(SET != i2c_flag_get(I2C0, I2C_FLAG_TBE)); // ½øÈëÊı¾İ·¢ËÍ×´Ì¬
+	while(!i2c_flag_get(I2C0, I2C_FLAG_ADDSEND));   // åˆ¤æ–­åœ°å€å‘é€å‡ºå»
+	i2c_flag_clear(I2C0, I2C_FLAG_ADDSEND);         // æ¸…é™¤ADDSENDä½
+	while(SET != i2c_flag_get(I2C0, I2C_FLAG_TBE)); // è¿›å…¥æ•°æ®å‘é€çŠ¶æ€
 	i2c_data_transmit(I2C0, i2c_addr);
 	while(!i2c_flag_get(I2C0, I2C_FLAG_BTC));
 	i2c_data_transmit (I2C0, i2c_data);
@@ -27,116 +27,116 @@ void i2c_write_byte(uint8_t i2c_addr, uint8_t i2c_data){
 }
 
 /**
-* ¹¦ÄÜ£º
-* ÊäÈë£ºoled_cmd£ºoledµÄ¿ØÖÆÃüÁî
+* åŠŸèƒ½ï¼š
+* è¾“å…¥ï¼šoled_cmdï¼šoledçš„æ§åˆ¶å‘½ä»¤
 **/
 void oled_write_command(uint8_t oled_cmd){
 	i2c_write_byte(OLED_I2C_CMD_ADDR, oled_cmd); 
 }
 
 /**
-* ¹¦ÄÜ£º
-* ÊäÈë£ºoled_data£ºÒª·¢ËÍ¸øoledµÄÊı¾İ
+* åŠŸèƒ½ï¼š
+* è¾“å…¥ï¼šoled_dataï¼šè¦å‘é€ç»™oledçš„æ•°æ®
 **/
 void oled_write_data(uint8_t oled_data){
 	i2c_write_byte(OLED_I2C_DATA_ADDR, oled_data); 
 }
 
 /**
-* ¹¦ÄÜ£º
-* ÊäÈë£ºÎŞ
+* åŠŸèƒ½ï¼š
+* è¾“å…¥ï¼šæ— 
 **/
 void oled_init(void){
-	oled_write_command(0xAE);// 0xAE:¹ØÏÔÊ¾£¬0xAF:¿ªÏÔÊ¾
+	oled_write_command(0xAE);// 0xAE:å…³æ˜¾ç¤ºï¼Œ0xAF:å¼€æ˜¾ç¤º
 	
-	oled_write_command(0x00);// ÉèÖÃ¿ªÊ¼µØÖ·µÄµÍ×Ö½Ú       
-	oled_write_command(0x10);// ÉèÖÃ¿ªÊ¼µØÖ·µÄ¸ß×Ö½Ú
+	oled_write_command(0x00);// è®¾ç½®å¼€å§‹åœ°å€çš„ä½å­—èŠ‚       
+	oled_write_command(0x10);// è®¾ç½®å¼€å§‹åœ°å€çš„é«˜å­—èŠ‚
 	
-	oled_write_command(0xd5);// ÃüÁîÍ·£¬ÉèÖÃÏÔÊ¾Ê±ÖÓ·ÖÆµ±È/Õñµ´Æ÷ÆµÂÊ
-	oled_write_command(0x80);// ÉèÖÃ·Ö¸î±ÈÂÊ£¬ÉèÖÃÊ±ÖÓÎª100Ö¡/Ãë
+	oled_write_command(0xd5);// å‘½ä»¤å¤´ï¼Œè®¾ç½®æ˜¾ç¤ºæ—¶é’Ÿåˆ†é¢‘æ¯”/æŒ¯è¡å™¨é¢‘ç‡
+	oled_write_command(0x80);// è®¾ç½®åˆ†å‰²æ¯”ç‡ï¼Œè®¾ç½®æ—¶é’Ÿä¸º100å¸§/ç§’
 	
-	oled_write_command(0xa8);// ÃüÁîÍ·£¬ÉèÖÃ¶àÂ·¸´ÓÃÂÊ(1 to 64)
+	oled_write_command(0xa8);// å‘½ä»¤å¤´ï¼Œè®¾ç½®å¤šè·¯å¤ç”¨ç‡(1 to 64)
 	oled_write_command(0x3f);// --1/64 duty
 	
-	oled_write_command(0xd3);// ÃüÁîÍ·£¬ÉèÖÃÏÔÊ¾Æ«ÒÆÒÆÎ»Ó³ÉäRAM¼ÆÊıÆ÷(0x00~0x3F)
-	oled_write_command(0x00);// ²»Æ«ÒÆ
+	oled_write_command(0xd3);// å‘½ä»¤å¤´ï¼Œè®¾ç½®æ˜¾ç¤ºåç§»ç§»ä½æ˜ å°„RAMè®¡æ•°å™¨(0x00~0x3F)
+	oled_write_command(0x00);// ä¸åç§»
 	
-	oled_write_command(0x00);// Ğ´ÈëÒ³Î»ÖÃ£¨0xB0~7£©
-	oled_write_command(0x40);// ÏÔÊ¾¿ªÊ¼Ïß
+	oled_write_command(0x00);// å†™å…¥é¡µä½ç½®ï¼ˆ0xB0~7ï¼‰
+	oled_write_command(0x40);// æ˜¾ç¤ºå¼€å§‹çº¿
 	
-	oled_write_command(0x8d);// VCCµçÔ´
+	oled_write_command(0x8d);// VCCç”µæº
 	oled_write_command(0x14);// --set(0x10) disable
 	
-	oled_write_command(0xa1);// ÉèÖÃ¶ÎÖØĞÂÓ³Éä
-	oled_write_command(0xc8);// ÉèÖÃYÖáÉ¨Ãè·½Ïò£¬0xc0ÉÏÏÂ·´ÖÃ £¬0xc8Õı³££¨ÉÏ±ßÎª0ĞĞ£©
+	oled_write_command(0xa1);// è®¾ç½®æ®µé‡æ–°æ˜ å°„
+	oled_write_command(0xc8);// è®¾ç½®Yè½´æ‰«ææ–¹å‘ï¼Œ0xc0ä¸Šä¸‹åç½® ï¼Œ0xc8æ­£å¸¸ï¼ˆä¸Šè¾¹ä¸º0è¡Œï¼‰
 	
-	oled_write_command(0xda);// ÃüÁîÍ·£¬--set com pins hardware configuration
+	oled_write_command(0xda);// å‘½ä»¤å¤´ï¼Œ--set com pins hardware configuration
 	oled_write_command(0x12);
 	
-	oled_write_command(0x81);// ¶Ô±È¶È£¬Ö¸Áî£º0x81£¬Êı¾İ£º0~255£¨255×î¸ß£©
+	oled_write_command(0x81);// å¯¹æ¯”åº¦ï¼ŒæŒ‡ä»¤ï¼š0x81ï¼Œæ•°æ®ï¼š0~255ï¼ˆ255æœ€é«˜ï¼‰
 	oled_write_command(0xff);
 	
-	oled_write_command(0xd9);// ÃüÁîÍ·£¬--set pre-charge period
+	oled_write_command(0xd9);// å‘½ä»¤å¤´ï¼Œ--set pre-charge period
 	oled_write_command(0xf1);// Set Pre-Charge as 15 Clocks & Discharge as 1 Clock
 	
-	oled_write_command(0xdb);// ÃüÁîÍ·£¬--set vcomh
+	oled_write_command(0xdb);// å‘½ä»¤å¤´ï¼Œ--set vcomh
 	oled_write_command(0x30);// Set VCOM Deselect Level
 	
-	oled_write_command(0x20);// Ë®Æ½Ñ°Ö·ÉèÖÃ
+	oled_write_command(0x20);// æ°´å¹³å¯»å€è®¾ç½®
 	oled_write_command(0x00);
 	
-	oled_write_command(0xa4);// 0xa4:Õı³£ÏÔÊ¾£¬0xa5:ÕûÌåµãÁÁ
-	oled_write_command(0xa6);// 0xa6:Õı³£ÏÔÊ¾£¬0xa7:·´É«ÏÔÊ¾
+	oled_write_command(0xa4);// 0xa4:æ­£å¸¸æ˜¾ç¤ºï¼Œ0xa5:æ•´ä½“ç‚¹äº®
+	oled_write_command(0xa6);// 0xa6:æ­£å¸¸æ˜¾ç¤ºï¼Œ0xa7:åè‰²æ˜¾ç¤º
 	
-	oled_write_command(0xAF);// 0xAE:¹ØÏÔÊ¾£¬0xAF:¿ªÏÔÊ¾
+	oled_write_command(0xAF);// 0xAE:å…³æ˜¾ç¤ºï¼Œ0xAF:å¼€æ˜¾ç¤º
 }
 
-// OLEDÏÔÊ¾µ¥Ò»É«¶È
+// OLEDæ˜¾ç¤ºå•ä¸€è‰²åº¦
 void oled_fill(uint8_t fill_data){
 	uint8_t i=0, n;
 	for(i = 0; i < 8; i++){
-		oled_write_command (0xB0+i);    //ÉèÖÃÒ³µØÖ·£¨0~7£©
-		oled_write_command (0x00);      //ÉèÖÃÏÔÊ¾Î»ÖÃ¡ªÁĞµÍµØÖ·
-		oled_write_command (0x10);      //ÉèÖÃÏÔÊ¾Î»ÖÃ¡ªÁĞ¸ßµØÖ·  		
+		oled_write_command (0xB0+i);    //è®¾ç½®é¡µåœ°å€ï¼ˆ0~7ï¼‰
+		oled_write_command (0x00);      //è®¾ç½®æ˜¾ç¤ºä½ç½®â€”åˆ—ä½åœ°å€
+		oled_write_command (0x10);      //è®¾ç½®æ˜¾ç¤ºä½ç½®â€”åˆ—é«˜åœ°å€  		
 		for(n = 0; n < 132; n++){
 			oled_write_data(fill_data);
 		}
 	}
 }
 
-// OLED °×ÆÁÏÔÊ¾
+// OLED ç™½å±æ˜¾ç¤º
 void oled_display_white(void){
 	oled_fill(0xFF);
 }
 
-// OLED ÇåÆÁÏÔÊ¾
+// OLED æ¸…å±æ˜¾ç¤º
 void oled_clear_all(void){
 
 	oled_fill(0x00);
 }
 
-// OLED´ò¿ª
+// OLEDæ‰“å¼€
 void oled_on(){
-	oled_write_command(0xAF);  // ¿ªÆôÏÔÊ¾
-	oled_write_command(0x8D);  // ÉèÖÃµçºÉ±Ã
-	oled_write_command(0x14);  // ¿ªÆôµçºÉ±Ã
+	oled_write_command(0xAF);  // å¼€å¯æ˜¾ç¤º
+	oled_write_command(0x8D);  // è®¾ç½®ç”µè·æ³µ
+	oled_write_command(0x14);  // å¼€å¯ç”µè·æ³µ
 }
 
-// OLED¹Ø±Õ
+// OLEDå…³é—­
 void oled_off(){
-	oled_write_command(0xAF);  // ¿ªÆôÏÔÊ¾
-	oled_write_command(0x8D);  // ÉèÖÃµçºÉ±Ã
-	oled_write_command(0x10);  // ¹Ø±ÕµçºÉ±Ã
+	oled_write_command(0xAF);  // å¼€å¯æ˜¾ç¤º
+	oled_write_command(0x8D);  // è®¾ç½®ç”µè·æ³µ
+	oled_write_command(0x10);  // å…³é—­ç”µè·æ³µ
 }
 
-// OLEDÉèÖÃÏÔÊ¾Î»ÖÃ
+// OLEDè®¾ç½®æ˜¾ç¤ºä½ç½®
 void oled_set_pos(uint8_t x, uint8_t y){
 	oled_write_command(0xB0 + y);
 	oled_write_command((x & 0xf0) >> 4 | 0x10 );
 	oled_write_command((x & 0x0f) | 0x01 );
 }
 
-// ÏÔÊ¾ÖĞÎÄºº×Ö
+// æ˜¾ç¤ºä¸­æ–‡æ±‰å­—
 void oled_show_chinese(uint8_t x, uint8_t y, uint8_t index){
 	uint8_t i;
 	oled_set_pos(x, y);
@@ -149,13 +149,13 @@ void oled_show_chinese(uint8_t x, uint8_t y, uint8_t index){
 	}
 }
 
-// ÏÔÊ¾char×Ö·û
+// æ˜¾ç¤ºcharå­—ç¬¦
 void oled_show_char(uint8_t x, uint8_t y, uint8_t chr, uint8_t char_size){
 	uint8_t c_index = 0, i = 0;
 	
-	c_index = chr - ' ';  // »ñÈ¡chrÔÚ×ÖÄ£Êı×éÖĞµÄĞòºÅ
+	c_index = chr - ' ';  // è·å–chråœ¨å­—æ¨¡æ•°ç»„ä¸­çš„åºå·
 	if(char_size == 16){
-		if(x > MAX_COLUMN - 8){ //Èç¹û³¬³öÁËÆÁÄ»µÄÏÔÊ¾¿í¶È£¬Ôò»»µ½ÏÂÒ»ĞĞÖØĞÂ¿ªÊ¼
+		if(x > MAX_COLUMN - 8){ //å¦‚æœè¶…å‡ºäº†å±å¹•çš„æ˜¾ç¤ºå®½åº¦ï¼Œåˆ™æ¢åˆ°ä¸‹ä¸€è¡Œé‡æ–°å¼€å§‹
 			x = 0;
 			y += 2;
 		}
@@ -168,7 +168,7 @@ void oled_show_char(uint8_t x, uint8_t y, uint8_t chr, uint8_t char_size){
 			oled_write_data(F8X16[c_index*16 + i + 8]);
 		}
 	}else if(char_size == 8){
-		if(x > MAX_COLUMN - 6){ //Èç¹û³¬³öÁËÆÁÄ»µÄÏÔÊ¾¿í¶È£¬Ôò»»µ½ÏÂÒ»ĞĞÖØĞÂ¿ªÊ¼
+		if(x > MAX_COLUMN - 6){ //å¦‚æœè¶…å‡ºäº†å±å¹•çš„æ˜¾ç¤ºå®½åº¦ï¼Œåˆ™æ¢åˆ°ä¸‹ä¸€è¡Œé‡æ–°å¼€å§‹
 			x = 0;
 			y += 1;
 		}
@@ -181,7 +181,7 @@ void oled_show_char(uint8_t x, uint8_t y, uint8_t chr, uint8_t char_size){
 	}
 }
 
-// ÏÔÊ¾×Ö·û´®
+// æ˜¾ç¤ºå­—ç¬¦ä¸²
 void oled_show_string(uint8_t x, uint8_t y, uint8_t *str, uint8_t char_size){
 	uint8_t i = 0;
 	while(str[i] != '\0'){
@@ -203,7 +203,7 @@ void oled_show_string(uint8_t x, uint8_t y, uint8_t *str, uint8_t char_size){
 	}
 }
 
-// ÔÚ(x,y)´¦ÏÔÊ¾¡°error!¡±ĞÅÏ¢
+// åœ¨(x,y)å¤„æ˜¾ç¤ºâ€œerror!â€ä¿¡æ¯
 void oled_show_error(uint8_t x, uint16_t y, uint8_t *err){
 	oled_show_string(x, y, err, 16);
 }
