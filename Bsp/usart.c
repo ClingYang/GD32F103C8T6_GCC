@@ -53,7 +53,6 @@ void nvic_config(void)
     nvic_irq_enable(USART2_IRQn, 0, 0);
 }
 
-
 #ifdef __GNUC__
 int _write(int fd, char *pBuffer, int size)
 {
@@ -75,10 +74,12 @@ int fputc(int ch, FILE *f)
     return ch;
 }
 #endif
-//还是要把串口2的中断打开的
+/// @brief 串口2中断函数
+/// @param
 void USART2_IRQHandler(void)
 {
-    if(RESET != usart_interrupt_flag_get(USART2, USART_INT_FLAG_IDLE)) {
+    if (RESET != usart_interrupt_flag_get(USART2, USART_INT_FLAG_IDLE))
+    {
         /* clear IDLE flag */
         usart_data_receive(USART2);
         /* number of data received */
@@ -89,4 +90,28 @@ void USART2_IRQHandler(void)
         dma_transfer_number_config(DMA0, DMA_CH2, 256);
         dma_channel_enable(DMA0, DMA_CH2);
     }
+}
+/// @brief 自定义串口2 打印函数
+/// @param fmt
+/// @param
+void printf2(const char *fmt, ...)
+{
+    /* 大小根据需要调整 */
+    char buf[256] = {0};
+    /* 指向当前参数的一个字符指针 */
+    va_list arg;
+    /* arg指向可变参数里边的第一个参数 */
+    va_start(arg, fmt);
+    /* 按照fmt的格式将arg里的值依次转换成字符保存到buf中 */
+    vsnprintf(buf, sizeof(buf), fmt, arg);
+    va_end(arg);
+
+    for (uint32_t i = 0; i < strlen(buf); i++)
+    {
+        usart_data_transmit(USART0, buf[i]);
+        while (RESET == usart_flag_get(USART2, USART_FLAG_TBE))
+            ;
+    }
+    while (usart_flag_get(USART2, USART_FLAG_TC) == RESET)
+        ;
 }
