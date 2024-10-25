@@ -17,4 +17,6 @@ void i2c_init(void){
 	
 	//使能i2c0
 	i2c_enable(I2C0);
+	// GPIO_WriteBit(GPIOB, GPIO_Pin_8, (BitAction)BitValue);
+    // gpio_bit_write(GPIOB, GPIO_Pin_8, (BitAction)BitValue);
 }
