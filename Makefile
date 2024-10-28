@@ -6,7 +6,7 @@
 TARGET = gd32f10x
 # 你的路径 需要修改的地方
 MYLDSCRIPT = Firmware/Ld/Link.ld
-MYOPENOCD = "D:/TOOL/OPENOCD/BIN/OPENOCD.EXE"
+MYOPENOCD = "E:/TOOL/OPENOCD/BIN/OPENOCD.EXE"
 # C文件目录
 SRCDIR := .
 SRCS := \
@@ -17,12 +17,6 @@ $(wildcard $(SRCDIR)/User/**/*.c)\
 $(wildcard $(SRCDIR)/Firmware/CMSIS/GD/GD32F10x/Source/system_gd32f10x.c)\
 $(wildcard $(SRCDIR)/Firmware/GD32F10x_standard_peripheral/Source/*.c) 
 
-# 下载器 jlink stlink >>>>>>>>>>>>>>这里可以修改下载器
-# 例如换成 stlink :MYINTERFACE = interface/stlink.cfg
-MYINTERFACE = interface/jlink.cfg
-# 芯片系列 gd用st的cfg
-MYTARGET = target/stm32f1x.cfg 
-# 
 MYC_DEFS =  \
 -DUSE_STDPERIPH_DRIVER \
 -DGD32F10X_MD
