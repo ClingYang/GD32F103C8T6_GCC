@@ -18,8 +18,7 @@ int main()
     i2c_init();
     oled_init();
     oled_clear_all();
-
-    oled_show_string(24, 0, (uint8_t *)"USART2", 16);
+    oled_show_string(0, 0, (uint8_t *)"USART2", 16);
 
     while (1)
     {
