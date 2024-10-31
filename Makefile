@@ -176,9 +176,11 @@ program:
 # clean up
 #######################################
 clean:
-# -rm -fR $(BUILD_DIR)  
-	cmd /c rd /s /q $(BUILD_DIR)
-
+ifeq ($(OS),Windows_NT)
+	rmdir /Q /S $(BUILD_DIR)
+else
+	-rm -fR $(BUILD_DIR)
+endif
 #######################################
 # dependencies
 #######################################

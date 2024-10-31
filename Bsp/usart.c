@@ -65,9 +65,6 @@ int _write(int fd, char *pBuffer, int size)
     return size;
 }
 
-
-
-
 #else
 /* retarget the C library printf function to the USART */
 int fputc(int ch, FILE *f)
